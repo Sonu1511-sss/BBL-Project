@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-dark-700;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    @apply bg-dark-950 text-gray-100;
+  }
+
+  code {
+    @apply font-mono text-sm;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  /* Card Components */
+  .card {
+    @apply bg-dark-900 rounded-lg border border-dark-700 shadow-lg hover:shadow-xl hover:border-primary-600 transition-all duration-200;
+  }
+
+  .card-free {
+    @apply card border-l-4 border-l-green-500;
+  }
+
+  .card-paid {
+    @apply card border-l-4 border-l-amber-500;
+  }
+
+  /* Button Components */
+  .btn-primary {
+    @apply bg-primary-600 text-white px-4 py-2.5 rounded-md font-medium 
+           hover:bg-primary-700 active:bg-primary-800 
+           transition-colors duration-150 
+           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-dark-900;
+  }
+
+  .btn-secondary {
+    @apply bg-dark-800 text-primary-400 px-4 py-2.5 rounded-md font-medium border border-primary-600/30
+           hover:bg-dark-700 hover:border-primary-500 active:bg-dark-600
+           transition-colors duration-150
+           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-dark-900;
+  }
+
+  .btn-ghost {
+    @apply text-gray-300 px-4 py-2.5 rounded-md font-medium
+           hover:bg-dark-800 active:bg-dark-700
+           transition-colors duration-150
+           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-dark-900;
+  }
+
+  /* Badge Components */
+  .badge-free {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold
+           bg-green-500/20 text-green-400 border border-green-500/30;
+  }
+
+  .badge-paid {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold
+           bg-amber-500/20 text-amber-400 border border-amber-500/30;
+  }
+
+  .badge-category {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium
+           bg-dark-800 text-gray-300 border border-dark-700;
+  }
+
+  /* Text Components */
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent;
+  }
+
+  .text-code {
+    @apply font-mono text-sm bg-dark-800 px-1.5 py-0.5 rounded text-gray-300 border border-dark-700;
+  }
+
+  /* Layout Components */
+  .container-main {
+    @apply max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-8 sm:py-12 md:py-16 lg:py-20;
+  }
+
+  /* Progress Components */
+  .progress-bar {
+    @apply w-full bg-dark-800 rounded-full h-2 overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full bg-primary-600 transition-all duration-300;
+  }
+
+  /* Divider */
+  .divider {
+    @apply border-t border-dark-700 my-6;
+  }
+
+  /* Code Block Style */
+  .code-block {
+    @apply bg-code-bg text-code-text p-4 rounded-lg border border-code-border
+           font-mono text-sm overflow-x-auto;
+  }
+}
+
