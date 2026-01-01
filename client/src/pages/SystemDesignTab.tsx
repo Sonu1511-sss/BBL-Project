@@ -185,7 +185,7 @@ export default function SystemDesignTab() {
         </div>
 
         {/* Overall Progress */}
-        <div className="bg-dark-900 border border-dark-700 rounded-lg p-6 mb-6">
+        <div className="bg-dark-800 border border-dark-700 rounded-lg p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-gray-100">Overall Progress</h2>
           <span className="text-lg font-bold text-gray-300">
