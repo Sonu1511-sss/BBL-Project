@@ -1,8 +1,9 @@
+import { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 interface AdminRouteProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function AdminRoute({ children }: AdminRouteProps) {
@@ -16,17 +17,13 @@ export default function AdminRoute({ children }: AdminRouteProps) {
     );
   }
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  // Check role - handle both 'role' property and case-insensitive check
-  const userRole = (user as any).role || user.role;
-  if (userRole !== 'admin') {
-    console.log('User role:', userRole, 'Expected: admin');
-    return <Navigate to="/dashboard" replace />;
+  if (!user || user.role !== 'admin') {
+    return <Navigate to="/admin" replace />;
   }
 
   return <>{children}</>;
 }
+
+
+
 

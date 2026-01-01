@@ -8,7 +8,7 @@ const bookingSchema = new mongoose.Schema({
   },
   mentorId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'Mentor',
     required: true
   },
   sessionType: {

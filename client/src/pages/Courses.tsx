@@ -1,144 +1,126 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import toast from 'react-hot-toast';
-
-const API_URL = import.meta.env.VITE_API_URL || '/api';
-
-interface Course {
-  _id: string;
-  title: string;
-  slug: string;
-  description: string;
-  category: string;
-  thumbnail?: string;
-  enrolledCount: number;
-}
 
 export default function Courses() {
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
-
-  useEffect(() => {
-    fetchCourses();
-  }, []);
-
-  const fetchCourses = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/courses`);
-      setCourses(response.data.courses || []);
-    } catch (error: any) {
-      console.error('Failed to fetch courses:', error);
-      if (error.response) {
-        // Server responded with error
-        toast.error(error.response.data?.error || 'Failed to load courses');
-      } else if (error.request) {
-        // Request made but no response
-        toast.error('Cannot connect to server. Please make sure backend is running.');
-      } else {
-        // Something else happened
-        toast.error('Failed to load courses');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const categories = ['All', 'DSA', 'System Design', 'LLD', 'OS', 'CN', 'DBMS', 'AI/ML'];
-  const filteredCourses = selectedCategory === 'All'
-    ? courses
-    : courses.filter(course => course.category === selectedCategory);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-dark-950">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-      </div>
-    );
-  }
+  // 5 Dummy Courses
+  const tracks = [
+    { 
+      id: 'dsa', 
+      name: 'DSA Patterns', 
+      description: 'Master Data Structures and Algorithms through curated patterns. Learn arrays, linked lists, trees, graphs, and dynamic programming.', 
+      icon: '💻', 
+      path: '/courses/dsa',
+      students: 1250,
+      lessons: 45
+    },
+    { 
+      id: 'system-design', 
+      name: 'System Design', 
+      description: 'Learn scalable system design principles. Master load balancing, database sharding, caching strategies, and microservices architecture.', 
+      icon: '🏗️', 
+      path: '/courses/system-design',
+      students: 980,
+      lessons: 32
+    },
+    { 
+      id: 'dbms', 
+      name: 'DBMS', 
+      description: 'Master database concepts and SQL. Learn normalization, indexing, transactions, ACID properties, and database optimization techniques.', 
+      icon: '🗄️', 
+      path: '/courses/dbms',
+      students: 750,
+      lessons: 28
+    },
+    { 
+      id: 'cn', 
+      name: 'Computer Networks', 
+      description: 'Understand network protocols and architecture. Learn TCP/IP, HTTP, DNS, load balancing, and distributed systems fundamentals.', 
+      icon: '🌐', 
+      path: '/courses/cn',
+      students: 620,
+      lessons: 24
+    },
+    { 
+      id: 'os', 
+      name: 'Operating Systems', 
+      description: 'Explore OS fundamentals. Master process management, memory management, file systems, concurrency, and synchronization concepts.', 
+      icon: '⚙️', 
+      path: '/courses/os',
+      students: 540,
+      lessons: 30
+    },
+  ];
 
   return (
-    <div className="container-main py-4 sm:py-8">
-      <div className="mb-6 sm:mb-8">
-        <div className="flex flex-wrap items-center gap-2 mb-3">
-          <span className="badge-free">All Free</span>
-          <span className="text-xs sm:text-sm text-gray-400">{courses.length} courses</span>
+    <div className="bg-dark-950 min-h-screen">
+      <div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
+          <div className="space-y-1 sm:space-y-2">
+            <p className="text-xs sm:text-sm text-gray-400">Curated learning tracks</p>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-100">All Free Courses</h1>
+          </div>
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="text-right">
+              <p className="text-sm sm:text-base text-gray-400 font-semibold">{tracks.length} courses</p>
+              <p className="text-xs sm:text-sm text-gray-500">100% free, forever</p>
+            </div>
+            <div className="px-3 py-1.5 sm:py-2 bg-green-500/20 text-green-400 rounded-lg text-xs sm:text-sm font-medium border border-green-500/30">
+              FREE
+            </div>
+          </div>
         </div>
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-100 mb-2">All Courses</h1>
-        <p className="text-sm sm:text-base text-gray-400">
-          Complete curriculum for tech interviews. <span className="font-semibold text-green-400">100% free</span>, forever.
-        </p>
-      </div>
 
-      {/* Category Filter */}
-      <div className="mb-6 sm:mb-8 flex flex-wrap gap-2">
-        {categories.map((category) => (
-          <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              selectedCategory === category
-                ? 'bg-primary-600 text-white'
-                : 'bg-dark-800 text-gray-300 border border-dark-700 hover:bg-dark-700'
-            }`}
-          >
-            {category}
-          </button>
-        ))}
-      </div>
+        {/* Description */}
+        <div className="mb-6 sm:mb-8">
+          <p className="text-sm sm:text-base text-gray-400 max-w-2xl">
+            Comprehensive courses designed for developers. Learn at your own pace with hands-on practice and real-world examples.
+          </p>
+        </div>
 
-      {/* Courses Grid - Clean Design */}
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredCourses.map((course) => (
-          <Link
-            key={course._id}
-            to={`/courses/${course._id}`}
-            className="card-free group"
-          >
-            {course.thumbnail && (
-              <div className="relative h-40 bg-dark-800 overflow-hidden">
-                <img
-                  src={course.thumbnail}
-                  alt={course.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-dark-900 via-transparent to-transparent"></div>
-                <div className="absolute top-3 right-3">
-                  <span className="badge-free">FREE</span>
+        {/* Courses Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
+          {tracks.map((track) => (
+            <Link
+              key={track.id}
+              to={track.path}
+              className="bg-dark-900 border border-dark-700 rounded-xl p-4 sm:p-5 lg:p-6 hover:border-[#4285F4] hover:shadow-lg hover:shadow-[#4285F4]/10 transition-all group"
+            >
+              <div className="flex items-start justify-between mb-3 sm:mb-4">
+                <div className="text-3xl sm:text-4xl lg:text-5xl group-hover:scale-110 transition-transform">
+                  {track.icon}
                 </div>
-              </div>
-            )}
-            <div className="p-5">
-              <div className="flex items-center justify-between mb-3">
-                <span className="badge-category">{course.category}</span>
-                {!course.thumbnail && <span className="badge-free">FREE</span>}
-              </div>
-              <h3 className="text-lg font-semibold text-gray-100 mb-2 group-hover:text-primary-400 transition-colors line-clamp-2">
-                {course.title}
-              </h3>
-              <p className="text-sm text-gray-400 mb-4 line-clamp-2 leading-relaxed">
-                {course.description}
-              </p>
-              <div className="flex items-center justify-between pt-3 border-t border-dark-700">
-                <span className="text-xs text-gray-500">
-                  {course.enrolledCount} students
+                <span className="px-2 py-1 bg-green-500/20 text-green-400 rounded-lg text-xs font-medium border border-green-500/30">
+                  FREE
                 </span>
-                <span className="text-sm text-primary-400 font-medium group-hover:underline">
+              </div>
+              
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-100 mb-2 sm:mb-3 group-hover:text-[#4285F4] transition-colors">
+                {track.name}
+              </h3>
+              
+              <p className="text-xs sm:text-sm lg:text-base text-gray-400 leading-relaxed mb-4 sm:mb-5 line-clamp-3">
+                {track.description}
+              </p>
+              
+              <div className="flex items-center justify-between pt-3 sm:pt-4 border-t border-dark-700">
+                <div className="flex items-center gap-3 sm:gap-4 text-xs sm:text-sm text-gray-500">
+                  <span className="flex items-center gap-1">
+                    <span>👥</span>
+                    <span>{track.students}+</span>
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span>📚</span>
+                    <span>{track.lessons} lessons</span>
+                  </span>
+                </div>
+                <span className="text-sm sm:text-base text-[#4285F4] font-medium group-hover:underline">
                   View →
                 </span>
               </div>
-            </div>
-          </Link>
-        ))}
-      </div>
-
-      {filteredCourses.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-600">No courses found in this category.</p>
+            </Link>
+          ))}
         </div>
-      )}
+      </div>
     </div>
   );
 }
-

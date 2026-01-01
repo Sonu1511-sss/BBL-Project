@@ -1,122 +1,417 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  * {
-    @apply border-dark-700;
-  }
-
-  body {
-    margin: 0;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    @apply bg-dark-950 text-gray-100;
-  }
-
-  code {
-    @apply font-mono text-sm;
-    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold tracking-tight;
-  }
+/* Custom CSS Variables */
+:root {
+  --primary-400: #60a5fa;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --dark-950: #0a0a0a;
+  --dark-900: #111827;
+  --dark-800: #1f2937;
+  --dark-700: #374151;
+  --dark-600: #4b5563;
 }
 
-@layer components {
-  /* Card Components */
-  .card {
-    @apply bg-dark-900 rounded-lg border border-dark-700 shadow-lg hover:shadow-xl hover:border-primary-600 transition-all duration-200;
-  }
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-  .card-free {
-    @apply card border-l-4 border-l-green-500;
-  }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #0a0a0a;
+  color: #f3f4f6;
+}
 
-  .card-paid {
-    @apply card border-l-4 border-l-amber-500;
-  }
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
 
-  /* Button Components */
-  .btn-primary {
-    @apply bg-primary-600 text-white px-4 py-2.5 rounded-md font-medium 
-           hover:bg-primary-700 active:bg-primary-800 
-           transition-colors duration-150 
-           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-dark-900;
-  }
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
 
-  .btn-secondary {
-    @apply bg-dark-800 text-primary-400 px-4 py-2.5 rounded-md font-medium border border-primary-600/30
-           hover:bg-dark-700 hover:border-primary-500 active:bg-dark-600
-           transition-colors duration-150
-           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-dark-900;
-  }
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
 
-  .btn-ghost {
-    @apply text-gray-300 px-4 py-2.5 rounded-md font-medium
-           hover:bg-dark-800 active:bg-dark-700
-           transition-colors duration-150
-           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 focus:ring-offset-dark-900;
-  }
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
 
-  /* Badge Components */
-  .badge-free {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold
-           bg-green-500/20 text-green-400 border border-green-500/30;
-  }
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
 
-  .badge-paid {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold
-           bg-amber-500/20 text-amber-400 border border-amber-500/30;
-  }
+/* Utility Classes */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
-  .badge-category {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium
-           bg-dark-800 text-gray-300 border border-dark-700;
-  }
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
 
-  /* Text Components */
-  .gradient-text {
-    @apply bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent;
-  }
+/* Container */
+.container-main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
 
-  .text-code {
-    @apply font-mono text-sm bg-dark-800 px-1.5 py-0.5 rounded text-gray-300 border border-dark-700;
-  }
-
-  /* Layout Components */
+@media (min-width: 640px) {
   .container-main {
-    @apply max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8;
-  }
-
-  .section-padding {
-    @apply py-8 sm:py-12 md:py-16 lg:py-20;
-  }
-
-  /* Progress Components */
-  .progress-bar {
-    @apply w-full bg-dark-800 rounded-full h-2 overflow-hidden;
-  }
-
-  .progress-fill {
-    @apply h-full bg-primary-600 transition-all duration-300;
-  }
-
-  /* Divider */
-  .divider {
-    @apply border-t border-dark-700 my-6;
-  }
-
-  /* Code Block Style */
-  .code-block {
-    @apply bg-code-bg text-code-text p-4 rounded-lg border border-code-border
-           font-mono text-sm overflow-x-auto;
+    padding: 0 1.5rem;
   }
 }
+
+@media (min-width: 1024px) {
+  .container-main {
+    padding: 0 2rem;
+  }
+}
+
+/* Card Styles */
+.card {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.card-paid {
+  background-color: #1f2937;
+  border: 1px solid #f59e0b;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+/* Button Styles */
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+
+.btn-secondary {
+  background-color: #374151;
+  color: #f3f4f6;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: #4b5563;
+}
+
+/* Form Styles */
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  color: #f3f4f6;
+  transition: all 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  ring: 2px;
+  ring-color: #3b82f6;
+}
+
+.form-select {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  color: #f3f4f6;
+  transition: all 0.2s;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  ring: 2px;
+  ring-color: #3b82f6;
+}
+
+/* Badge Styles */
+.badge-category {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: #374151;
+  color: #9ca3af;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badge-paid {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: #f59e0b;
+  color: white;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Loading Spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Progress Ring */
+.progress-ring__circle {
+  transition: stroke-dasharray 0.3s;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS Variables */
+:root {
+  --primary-400: #60a5fa;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --dark-950: #0a0a0a;
+  --dark-900: #111827;
+  --dark-800: #1f2937;
+  --dark-700: #374151;
+  --dark-600: #4b5563;
+}
+
+/* Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #0a0a0a;
+  color: #f3f4f6;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Utility Classes */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Container */
+.container-main {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-main {
+    padding: 0 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-main {
+    padding: 0 2rem;
+  }
+}
+
+/* Card Styles */
+.card {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.card-paid {
+  background-color: #1f2937;
+  border: 1px solid #f59e0b;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+/* Button Styles */
+.btn-primary {
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+
+.btn-secondary {
+  background-color: #374151;
+  color: #f3f4f6;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: #4b5563;
+}
+
+/* Form Styles */
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  color: #f3f4f6;
+  transition: all 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  ring: 2px;
+  ring-color: #3b82f6;
+}
+
+.form-select {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  color: #f3f4f6;
+  transition: all 0.2s;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  ring: 2px;
+  ring-color: #3b82f6;
+}
+
+/* Badge Styles */
+.badge-category {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: #374151;
+  color: #9ca3af;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badge-paid {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: #f59e0b;
+  color: white;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Loading Spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Progress Ring */
+.progress-ring__circle {
+  transition: stroke-dasharray 0.3s;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+
+
 

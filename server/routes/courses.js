@@ -1,23 +1,34 @@
 import express from 'express';
 import Course from '../models/Course.js';
-import { authenticate } from '../middleware/auth.js';
+import Track from '../models/Track.js';
+import Question from '../models/Question.js';
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
 const router = express.Router();
 
+// Optional auth middleware
+const optionalAuth = async (req, res, next) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (token) {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+      const user = await User.findById(decoded.userId).select('-password');
+      if (user) {
+        req.user = user;
+      }
+    }
+  } catch (error) {
+    // Ignore auth errors
+  }
+  next();
+};
+
 // @route   GET /api/courses
-// @desc    Get all courses (all are free)
+// @desc    Get all courses
 // @access  Public
 router.get('/', async (req, res) => {
   try {
-    // Check MongoDB connection
-    const mongoose = (await import('mongoose')).default;
-    if (mongoose.connection.readyState !== 1) {
-      return res.status(503).json({ 
-        error: 'Database not connected',
-        message: 'Please check MongoDB connection'
-      });
-    }
-
     const courses = await Course.find()
       .select('title slug description category thumbnail enrolledCount')
       .sort({ createdAt: -1 });
@@ -25,17 +36,108 @@ router.get('/', async (req, res) => {
     res.json({ courses: courses || [] });
   } catch (error) {
     console.error('Get courses error:', error);
-    res.status(500).json({ 
-      error: 'Server error',
-      message: error.message || 'Failed to fetch courses',
-      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
-    });
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// @route   GET /api/courses/track/:track
+// @desc    Get track with sections and questions (with user status if authenticated)
+// @access  Public (with optional auth)
+router.get('/track/:track', optionalAuth, async (req, res) => {
+  try {
+    // Map URL track names to database track names
+    const trackMap = {
+      'DSA Patterns': 'DSA Patterns',
+      'System Design': 'System Design',
+      'DBMS': 'DBMS',
+      'CN': 'CN',
+      'OS': 'OS',
+    };
+    
+    const trackName = decodeURIComponent(req.params.track);
+    const dbTrackName = trackMap[trackName] || trackName;
+    let track = await Track.findOne({ track: dbTrackName });
+
+    if (!track) {
+      return res.status(404).json({ error: 'Track not found' });
+    }
+
+    // Add user status to questions if authenticated
+    if (req.user) {
+      const trackObj = track.toObject();
+      for (const section of trackObj.sections) {
+        for (const question of section.questions) {
+          const questionDoc = await Question.findOne({
+            track: dbTrackName,
+            section: section.name,
+            id: question.id,
+          });
+
+          if (questionDoc && questionDoc.userStatus) {
+            const userStatus = questionDoc.userStatus.find(
+              us => us.userId.toString() === req.user._id.toString()
+            );
+            question.userStatus = userStatus || null;
+          }
+        }
+      }
+      res.json({ track: trackObj });
+    } else {
+      res.json({ track });
+    }
+  } catch (error) {
+    console.error('Get track error:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// @route   GET /api/courses/track/:track/sections/:sectionName
+// @desc    Get questions for a specific section
+// @access  Public (with optional auth)
+router.get('/track/:track/sections/:sectionName', optionalAuth, async (req, res) => {
+  try {
+    const track = await Track.findOne({ track: req.params.track });
+    
+    if (!track) {
+      return res.status(404).json({ error: 'Track not found' });
+    }
+
+    const section = track.sections.find(s => s.name === req.params.sectionName);
+    
+    if (!section) {
+      return res.status(404).json({ error: 'Section not found' });
+    }
+
+    // Add user status if authenticated
+    if (req.user) {
+      const sectionObj = section.toObject();
+      for (const question of sectionObj.questions) {
+        const questionDoc = await Question.findOne({
+          track: req.params.track,
+          section: req.params.sectionName,
+          id: question.id,
+        });
+
+        if (questionDoc && questionDoc.userStatus) {
+          const userStatus = questionDoc.userStatus.find(
+            us => us.userId.toString() === req.user._id.toString()
+          );
+          question.userStatus = userStatus || null;
+        }
+      }
+      res.json({ section: sectionObj });
+    } else {
+      res.json({ section });
+    }
+  } catch (error) {
+    console.error('Get section error:', error);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
 // @route   GET /api/courses/:id
-// @desc    Get single course with all modules and lessons
-// @access  Public (all content is free)
+// @desc    Get single course
+// @access  Public
 router.get('/:id', async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
@@ -47,87 +149,6 @@ router.get('/:id', async (req, res) => {
     res.json({ course });
   } catch (error) {
     console.error('Get course error:', error);
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
-// @route   GET /api/courses/:id/modules
-// @desc    Get modules for a course
-// @access  Public
-router.get('/:id/modules', async (req, res) => {
-  try {
-    const course = await Course.findById(req.params.id)
-      .select('modules title');
-    
-    if (!course) {
-      return res.status(404).json({ error: 'Course not found' });
-    }
-
-    res.json({ 
-      courseTitle: course.title,
-      modules: course.modules.sort((a, b) => a.order - b.order)
-    });
-  } catch (error) {
-    console.error('Get modules error:', error);
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
-// @route   GET /api/courses/:id/modules/:moduleId/lessons
-// @desc    Get lessons for a module
-// @access  Public
-router.get('/:id/modules/:moduleId/lessons', async (req, res) => {
-  try {
-    const course = await Course.findById(req.params.id);
-    
-    if (!course) {
-      return res.status(404).json({ error: 'Course not found' });
-    }
-
-    const module = course.modules.id(req.params.moduleId);
-    if (!module) {
-      return res.status(404).json({ error: 'Module not found' });
-    }
-
-    res.json({ 
-      moduleTitle: module.title,
-      lessons: module.lessons.sort((a, b) => a.order - b.order)
-    });
-  } catch (error) {
-    console.error('Get lessons error:', error);
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
-// @route   POST /api/courses/:id/enroll
-// @desc    Enroll in a course (free enrollment)
-// @access  Private
-router.post('/:id/enroll', authenticate, async (req, res) => {
-  try {
-    const course = await Course.findById(req.params.id);
-    if (!course) {
-      return res.status(404).json({ error: 'Course not found' });
-    }
-
-    const User = (await import('../models/User.js')).default;
-    const user = await User.findById(req.user._id);
-
-    // Check if already enrolled
-    const alreadyEnrolled = user.enrolledCourses.some(
-      ec => ec.courseId.toString() === req.params.id
-    );
-
-    if (!alreadyEnrolled) {
-      user.enrolledCourses.push({ courseId: req.params.id });
-      await user.save();
-      
-      course.enrolledCount += 1;
-      await course.save();
-    }
-
-    res.json({ message: 'Enrolled successfully', course });
-  } catch (error) {
-    console.error('Enroll error:', error);
     res.status(500).json({ error: 'Server error' });
   }
 });

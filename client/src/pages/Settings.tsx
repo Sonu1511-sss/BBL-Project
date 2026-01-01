@@ -79,101 +79,52 @@ export default function Settings() {
   };
 
   return (
-    <div className="container-main py-4 sm:py-8">
-      <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-100 mb-2">Settings</h1>
-        <p className="text-sm sm:text-base text-gray-400">Manage your account and preferences</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-        {/* Profile Settings */}
-        <div className="card p-4 sm:p-6">
-          <h2 className="text-lg sm:text-xl font-semibold text-gray-100 mb-4">Profile</h2>
-          <form onSubmit={handleProfileUpdate} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Name
-              </label>
-              <input
-                type="text"
-                required
-                className="w-full px-4 py-2 bg-dark-800 border border-dark-700 text-gray-100 rounded-lg focus:ring-primary-500 focus:border-primary-500"
-                value={profileData.name}
-                onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Bio
-              </label>
-              <textarea
-                rows={3}
-                className="w-full px-4 py-2 bg-dark-800 border border-dark-700 text-gray-100 rounded-lg focus:ring-primary-500 focus:border-primary-500"
-                value={profileData.bio}
-                onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
-                placeholder="Tell us about yourself..."
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Current Goal
-              </label>
-              <input
-                type="text"
-                className="w-full px-4 py-2 bg-dark-800 border border-dark-700 text-gray-100 rounded-lg focus:ring-primary-500 focus:border-primary-500"
-                value={profileData.currentGoal}
-                onChange={(e) => setProfileData({ ...profileData, currentGoal: e.target.value })}
-                placeholder="e.g., Master DSA in 3 months"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn-primary w-full"
-            >
-              {loading ? 'Updating...' : 'Update Profile'}
-            </button>
-          </form>
+    <div className="bg-dark-950">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-100 mb-2">Settings</h1>
+          <p className="text-sm sm:text-base text-gray-400">Manage your account and preferences</p>
         </div>
 
-        {/* Password Settings */}
-        {user && !user.email?.includes('@google') && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
+          {/* Profile Settings */}
           <div className="card p-4 sm:p-6">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-100 mb-4">Change Password</h2>
-            <form onSubmit={handlePasswordUpdate} className="space-y-4">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-100 mb-4">Profile</h2>
+            <form onSubmit={handleProfileUpdate} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Current Password
+                  Name
                 </label>
                 <input
-                  type="password"
-                  name="currentPassword"
+                  type="text"
                   required
                   className="w-full px-4 py-2 bg-dark-800 border border-dark-700 text-gray-100 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  value={profileData.name}
+                  onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  New Password
+                  Bio
                 </label>
-                <input
-                  type="password"
-                  name="newPassword"
-                  required
-                  minLength={6}
+                <textarea
+                  rows={3}
                   className="w-full px-4 py-2 bg-dark-800 border border-dark-700 text-gray-100 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  value={profileData.bio}
+                  onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
+                  placeholder="Tell us about yourself..."
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Confirm New Password
+                  Current Goal
                 </label>
                 <input
-                  type="password"
-                  name="confirmPassword"
-                  required
-                  minLength={6}
+                  type="text"
                   className="w-full px-4 py-2 bg-dark-800 border border-dark-700 text-gray-100 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  value={profileData.currentGoal}
+                  onChange={(e) => setProfileData({ ...profileData, currentGoal: e.target.value })}
+                  placeholder="e.g., Master DSA in 3 months"
                 />
               </div>
               <button
@@ -181,11 +132,62 @@ export default function Settings() {
                 disabled={loading}
                 className="btn-primary w-full"
               >
-                {loading ? 'Updating...' : 'Update Password'}
+                {loading ? 'Updating...' : 'Update Profile'}
               </button>
             </form>
           </div>
-        )}
+
+          {/* Password Settings */}
+          {user && !user.email?.includes('@google') && (
+            <div className="card p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-100 mb-4">Change Password</h2>
+              <form onSubmit={handlePasswordUpdate} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Current Password
+                  </label>
+                  <input
+                    type="password"
+                    name="currentPassword"
+                    required
+                    className="w-full px-4 py-2 bg-dark-800 border border-dark-700 text-gray-100 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    New Password
+                  </label>
+                  <input
+                    type="password"
+                    name="newPassword"
+                    required
+                    minLength={6}
+                    className="w-full px-4 py-2 bg-dark-800 border border-dark-700 text-gray-100 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Confirm New Password
+                  </label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    required
+                    minLength={6}
+                    className="w-full px-4 py-2 bg-dark-800 border border-dark-700 text-gray-100 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn-primary w-full"
+                >
+                  {loading ? 'Updating...' : 'Update Password'}
+                </button>
+              </form>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
