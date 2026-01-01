@@ -3,9 +3,9 @@ export default {
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:4000',  // Backend ka exact port
+        target: 'https://bbl-project-3.onrender.com',  // Deployed backend URL
         changeOrigin: true,
-        secure: false,
+        secure: true,
       }
     }
   }

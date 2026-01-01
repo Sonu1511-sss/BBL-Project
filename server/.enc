@@ -1,5 +1,5 @@
 PORT=5000
-FRONTEND_URL=http://localhost:3000
+FRONTEND_URL=https://bbl-project.vercel.app
 MONGODB_URI=mongodb+srv://Shubham1511:Sonu%404321@cluster0.gl1ltyr.mongodb.net/BPL-Project?retryWrites=true&w=majority
 JWT_SECRET=your-secret-key-change-this-in-production
 
