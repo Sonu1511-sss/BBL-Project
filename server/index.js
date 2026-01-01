@@ -60,7 +60,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/babua-lms';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://Shubham1511:Sonu%404321@cluster0.gl1ltyr.mongodb.net/BPL-Project?retryWrites=true&w=majority';
 
 mongoose
   .connect(MONGODB_URI)

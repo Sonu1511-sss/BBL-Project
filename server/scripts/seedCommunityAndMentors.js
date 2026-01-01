@@ -10,7 +10,7 @@ dotenv.config();
 
 async function seedCommunityAndMentors() {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/babua-lms');
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://Shubham1511:Sonu%404321@cluster0.gl1ltyr.mongodb.net/BPL-Project?retryWrites=true&w=majority');
     console.log('✅ Connected to MongoDB');
 
     // Get courses for reference
