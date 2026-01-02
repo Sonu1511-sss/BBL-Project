@@ -3,7 +3,7 @@ export default {
   server: {
     proxy: {
       '/api': {
-        target: 'https://bbl-project-3.onrender.com',  // Deployed backend URL
+        target: 'https://bbl-project-2.onrender.com',  // Deployed backend URL
         changeOrigin: true,
         secure: true,
       }

@@ -294,7 +294,7 @@ Create a `.env` file in the `client` directory:
 
 ```env
 # API URL (defaults to /api if not set)
-VITE_API_URL=https://bbl-project-3.onrender.com/api
+VITE_API_URL=https://bbl-project-2.onrender.com/api
 
 # Google OAuth Client ID (optional)
 VITE_GOOGLE_CLIENT_ID=your-google-client-id
@@ -364,7 +364,7 @@ npm run dev
 
 The application will be available at:
 - **Frontend**: https://bbl-project.vercel.app (Production) or http://localhost:5173 (Development)
-- **Backend API**: https://bbl-project-3.onrender.com (Production) or http://localhost:5000 (Development)
+- **Backend API**: https://bbl-project-2.onrender.com (Production) or http://localhost:5000 (Development)
 
 **Production Mode:**
 
