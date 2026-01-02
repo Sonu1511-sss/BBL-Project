@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import './utils/axiosConfig' // Setup axios interceptors before anything else
 import App from './App.tsx'
 import './index.css'
 

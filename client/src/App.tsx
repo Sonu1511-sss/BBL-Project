@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'r
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './contexts/AuthContext';
+import ErrorBoundary from './components/ErrorBoundary';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 import Navbar from './components/Navbar';
@@ -190,16 +191,19 @@ function AppContent() {
 function App() {
   // Only wrap with GoogleOAuthProvider if clientId is provided
   // This prevents the "Missing required parameter client_id" error
-  if (GOOGLE_CLIENT_ID) {
-    return (
-      <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-        <AppContent />
-      </GoogleOAuthProvider>
-    );
-  }
+  const appContent = GOOGLE_CLIENT_ID ? (
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+      <AppContent />
+    </GoogleOAuthProvider>
+  ) : (
+    <AppContent />
+  );
   
-  // Fallback without Google OAuth
-  return <AppContent />;
+  return (
+    <ErrorBoundary>
+      {appContent}
+    </ErrorBoundary>
+  );
 }
 
 export default App;
